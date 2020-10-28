@@ -2,6 +2,8 @@ import nltk
 import numpy as np
 import pandas as pd
 import re
+from sklearn.metrics.pairwise import cosine_similarity
+import networkx as nx
 import glob
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
@@ -83,4 +85,6 @@ def apply_pagerank(sim_mat):
 def summary_extraction(scores,sentences,k):
     ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
     for i in range(k):
+        if i>=len(ranked_sentences):
+            break
         print(ranked_sentences[i][1])
