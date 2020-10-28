@@ -64,3 +64,23 @@ def vector_representations(clean_sentences):
         sentence_vectors.append(v)
     return sentence_vectors
 
+#computing similarity score for vectors
+def similarity_matrix(sentence_vectors):
+    sim_mat = np.zeros([len(sentence_vectors), len(sentence_vectors)])
+    for i in range(len(sentence_vectors)):
+        for j in range(len(sentence_vectors)):
+            if i != j:
+                sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,100), sentence_vectors[j].reshape(1,100))[0,0]
+    return sim_mat
+
+#apply page rank algo
+def apply_pagerank(sim_mat):
+    nx_graph = nx.DiGraph(sim_mat)
+    scores = nx.pagerank(nx_graph)
+    return scores
+
+#extract tweet summary based on page-rank algo
+def summary_extraction(scores,sentences,k):
+    ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
+    for i in range(k):
+        print(ranked_sentences[i][1])
