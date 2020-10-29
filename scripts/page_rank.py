@@ -7,9 +7,10 @@ import networkx as nx
 import glob
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
+import json
 
 word_embeddings = {}
-f = open('glove.6B.100d.txt', encoding='utf-8')
+f = open('../../glove/archive/glove.6B.100d.txt', encoding='utf-8')
 for line in f:
     values = line.split()
     word = values[0]
@@ -88,3 +89,16 @@ def summary_extraction(scores,sentences,k):
         if i>=len(ranked_sentences):
             break
         print(ranked_sentences[i][1])
+
+
+tweets = []
+with open("../dataset/IRE Project-20201029T070205Z-001/raw") as f:
+    lines = f.readlines()
+    for l in lines:
+        tweet = json.loads(l)
+        # print(tweet.keys())
+        tweets.append([tweet["id_str"], tweet["full_text"]])
+# dataset = json_normalize(d["id"])
+df = pd.DataFrame(data=tweets, columns=["ID", "Text"])
+# print(df.head)
+df.to_pickle("../dataset/data.pkl")
