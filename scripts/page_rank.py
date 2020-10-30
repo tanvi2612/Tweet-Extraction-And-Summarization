@@ -11,7 +11,7 @@ import json
 from preprocessing import clean
 
 word_embeddings = {}
-f = open('../../glove/archive/glove.6B.100d.txt', encoding='utf-8')
+f = open('../glove/glove.6B.100d.txt', encoding='utf-8')
 for line in f:
     values = line.split()
     word = values[0]
@@ -20,20 +20,6 @@ for line in f:
 f.close()
 
 stop_words = stopwords.words('english')
-
-
-
-
-# read tweets corresponding to the tag
-def get_sentences(tag):
-    files = glob.glob("data/tweets/"+tag+"/*")
-    sentences = []
-    for file in files:
-        fd = open(file,"r")
-        for line in fd:
-            sentences.append(line)
-    return sentences
-
 
 #tokenize received sentences
 def sentence_tokenize(tweets):
@@ -93,7 +79,7 @@ def summary_extraction(scores,sentences,k):
 
 
 tweets = []
-with open("../dataset/IRE-Project-20201029T070205Z-001/raw") as f:
+with open("../dataset/raw") as f:
     lines = f.readlines()
     for l in lines:
         tweet = json.loads(l)
@@ -101,6 +87,15 @@ with open("../dataset/IRE-Project-20201029T070205Z-001/raw") as f:
         # print(tweet.keys())
         tweets.append([tweet["id_str"], text ])
 # dataset = json_normalize(d["id"])
-df = pd.DataFrame(data=tweets, columns=["ID", "Text"])
+# df = pd.DataFrame(data=tweets, columns=["ID", "Text"])
 # print(df.head)
-df.to_pickle("../dataset/data.pkl")
+# df.to_pickle("../dataset/data.pkl")
+
+tweets = [tweet[1] for tweet in tweets]
+sentences = sentence_tokenize(tweets)
+clean_sentences = text_processing(sentences)
+sentence_vectors = vector_representations(clean_sentences)
+sim_mat = similarity_matrix(sentence_vectors)
+scores = apply_pagerank(sim_mat)
+summary_extraction(scores, sentences, 5)
+
