@@ -14,11 +14,21 @@ def replace_contractions(text):
     return contractions_re.sub(replace, text)
 
 def clean(text):
+    hashtag_count = 0
+    mention_count = 0
+    punt_count = 0
     text = str(text)
     new_text = ""
     for i in text.split():
+        if i.startswith('@'):
+            mention_count += 1
+        elif i.startswith('#'):
+            hashtag_count += 1
+        elif i in string.punctuation:
+            punt_count += 1
         if not i.startswith('@') and not i.startswith('#') and i not in string.punctuation:
             new_text+=i+" "	
+        
 	
     text = new_text
     text = replace_contractions(text)
@@ -29,4 +39,4 @@ def clean(text):
     text = re.sub(r'[^\x00-\x7F]+','', text)
     punct_pattern = r'[^a-zA-Z0-9\s]'
     text = re.sub(punct_pattern, ' ', text)
-    return text
+    return text, mention_count, hashtag_count, punt_count
