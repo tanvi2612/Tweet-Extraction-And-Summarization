@@ -1,0 +1,10 @@
+The total number of unique tweets considered are: 11205
+The total number of duplicate tweets are: 11077
+-----Stats---------
+The Total Number of Words in the text are: 181835
+The Number of Words in the longest Tweet: 60
+The Number of Words in the shortest Tweet: 0
+The Total Number of Unique Words in the text are: 26190
+The Total Number of Hashtags in the text are: 5707
+The Total Number of Mentions in the text are: 23811
+The Total Number of Puntuations in the text are: 2049
