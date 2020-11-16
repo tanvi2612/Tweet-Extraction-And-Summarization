@@ -118,12 +118,14 @@ with open("../dataset/raw-dataset/raw") as f:
     punct_count = 0
     for l in lines:
         tweet = json.loads(l)
+        # print(tweet.keys())
         text, m, h, p = clean(tweet["full_text"])
         hashtag_count += h
         mention_count += m
         punct_count += p
         # print(tweet.keys())
         tweets.append([tweet["id_str"], text])
+        # break
 # dataset = json_normalize(d["id"])
 df = pd.DataFrame(data=tweets, columns=["ID", "Text"])
 orig = len(df.index)
@@ -143,18 +145,18 @@ print("The Total Number of Mentions in the text are:", mention_count)
 print("The Total Number of Puntuations in the text are:", punct_count)
 # print(df.head)
 # df.to_pickle("../dataset/data.pkl")
-tweets = df["Text"].tolist()
-print(len(tweets))
-# tweets = [tweet[1] for tweet in tweets]
-sentences = sentence_tokenize(tweets)
-print("done tokenize")
-clean_sentences = text_processing(sentences)
-print("done preprocessing")
-sentence_vectors = vector_representations(clean_sentences)
-sentence_vectors=np.array([np.array(xi) for xi in sentence_vectors])
-print("done vector rep", sentence_vectors.shape)
-sim_mat = similarity_matrix(sentence_vectors)
-print("done similarity matrix", sim_mat.shape)
-scores = apply_pagerank(sim_mat)
-print("done pagerank")
-summary_extraction(scores, sentences, 5)
+# tweets = df["Text"].tolist()
+# print(len(tweets))
+# # tweets = [tweet[1] for tweet in tweets]
+# sentences = sentence_tokenize(tweets)
+# print("done tokenize")
+# clean_sentences = text_processing(sentences)
+# print("done preprocessing")
+# sentence_vectors = vector_representations(clean_sentences)
+# sentence_vectors=np.array([np.array(xi) for xi in sentence_vectors])
+# print("done vector rep", sentence_vectors.shape)
+# sim_mat = similarity_matrix(sentence_vectors)
+# print("done similarity matrix", sim_mat.shape)
+# scores = apply_pagerank(sim_mat)
+# print("done pagerank")
+# summary_extraction(scores, sentences, 5)

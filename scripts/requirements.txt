@@ -1,0 +1,6 @@
+networkx==2.5
+sklearn==0.0
+textblob==0.15.3
+transformers==3.5.1
+torch==1.7.0
+seaborn==0.11.0
