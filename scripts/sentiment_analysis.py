@@ -202,11 +202,11 @@ def main():
     print("Neutral tweets percentage: {} %".format(round(100*(len(tweets) -(len( ntweets )+len( ptweets)))/len(tweets), 2))) 
     # printing first 5 positive tweets 
     # print("\n\nPositive tweets:") 
-    # for tweet in ptweets[:10]: 
+    # for tweet in ptweets[:20]: 
     #     print(tweet) 
     # # printing first 5 negative tweets 
     # print("\n\nNegative tweets:") 
-    # for tweet in ntweets[:10]: 
+    # for tweet in ntweets[:20]: 
     #     print(tweet) 
     # dataset = df
     # print(dataset["Text"])
@@ -217,12 +217,13 @@ def main():
 
     # print("Training Models using the above data")
 
-    # tf_vector = get_feature_vector(np.array(df["Text"]).ravel())
-    # X = tf_vector.transform(np.array(df["Text"]).ravel())
-    # y = np.array(df["Sentiment"]).ravel()
+    tf_vector = get_feature_vector(np.array(df["Text"]).ravel())
+    X = tf_vector.transform(np.array(df["Text"]).ravel())
+    y = np.array(df["Sentiment"]).ravel()
     
 
-    # # Training Naive Bayes model
+    # Training Naive Bayes model
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=30)
     # NB_model = MultinomialNB()
     # NB_model.fit(X_train, y_train)
     # y_predict_nb = NB_model.predict(X_test)
@@ -234,7 +235,7 @@ def main():
     # y_predict_lr = LR_model.predict(X_test)
     # print("Accucracy in Logistic Regression Model:", accuracy_score(y_test, y_predict_lr))
 
-
+    # exit(1)
     #--------------------BERT-------------------
     df_train, df_test = train_test_split(df, test_size=0.3, random_state=30)
     df_val, df_test = train_test_split(df_test, test_size=0.1, random_state=30)
@@ -252,15 +253,16 @@ def main():
     train_data_loader, df_train = create_data_loader(df_train, tokenizer)
     val_data_loader, df_val = create_data_loader(df_val, tokenizer)
     test_data_loader, df_test = create_data_loader(df_test, tokenizer)
-    # for txt in df.Text:
-    #     tokens = tokenizer.encode(txt, max_length=512, truncation=True)
-    #     token_lens.append(len(tokens))
+    token_lens = []
+    for txt in df.Text:
+        tokens = tokenizer.encode(txt, max_length=512, truncation=True)
+        token_lens.append(len(tokens))
 
-    # sns.displot(token_lens)
-    # plt.xlim([0, 150])
-    # plt.xlabel('Token count')
-    # plt.show()
-   
+    sns.displot(token_lens)
+    plt.xlim([0, 150])
+    plt.xlabel('Token count')
+    plt.show()
+    exit()
     class_names = ['negative', 'neutral', 'positive']
 
     model = SentimentClassifier(len(class_names))
@@ -308,3 +310,4 @@ def main():
 if __name__ == "__main__": 
     # calling main function 
     main() 
+    
